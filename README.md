@@ -1,3 +1,7 @@
+##Fetch Repos from github
+A React app that allows a user to request the repos from a gitub account
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
