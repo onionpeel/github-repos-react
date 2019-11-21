@@ -1,22 +1,37 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import {Button} from 'react-bootstrap';
-import RepoList from './RepoList';
+import {Button, Form} from 'react-bootstrap';
+import GetRepos from './GetRepos';
 
 const Repos = () => {
   const [repos, setRepos] = useState('');
+  const [query, setQuery] = useState('');
 
-  const getRepos = async () => {
-    let user = 'onionpeel'
-    let repos = await axios.get(`https://api.github.com/users/${user}/repos`);
+  const getRepos = async accountName => {
+    let repos = await axios.get(`https://api.github.com/users/${accountName}/repos`);
     setRepos(repos.data);
+  };
+
+  const handleOnChange = e => {
+    setQuery(e.target.value);
+  };
+
+  const handleOnSubmit = e => {
+    e.preventDefault();
+    getRepos(query);
   };
 
   return (
     <div>
-      <Button onClick={getRepos}>Get repos</Button>
+      <Form onSubmit={handleOnSubmit}>
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>Find Github repos</Form.Label>
+          <Form.Control type="name" placeholder="Github account name" value={query} onChange={handleOnChange}/>
+        </Form.Group>
+        <Button type="submit">Get repos</Button>
+      </Form>
 
-      {repos.length > 0 && <RepoList repos={repos} />}
+      <GetRepos repos={repos} getRepos={getRepos}/>
     </div>
   );
 };
